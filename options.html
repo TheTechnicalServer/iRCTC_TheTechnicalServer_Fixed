@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TheTechnicalServer_AutoFill - Passenger Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="settings-shell">
+    <header class="settings-header">
+      <h1>TheTechnicalServer_AutoFill</h1>
+      <span class="gold-pill">PASSENGER FAST</span>
+    </header>
+
+    <form id="settingsForm" class="settings-card" novalidate>
+      <section class="irctc-section">
+        <div class="section-title">Booking type and passenger limit</div>
+        <p class="section-help">This extension fills the IRCTC passenger page only. Tatkal allows up to 4 saved passengers; General allows up to 6. It can prepare a payment preference, but IRCTC login, CAPTCHA, queue, Continue on review, Pay &amp; Book, and final confirmation stay under your control.</p>
+        <div class="field-row compact">
+          <label for="bookingType">Booking type</label>
+          <select id="bookingType">
+            <option value="general">General — up to 6 passengers</option>
+            <option value="tatkal">Tatkal — up to 4 passengers</option>
+          </select>
+        </div>
+        <div id="passengerLimitNote" class="limit-note" role="status"></div>
+      </section>
+
+      <section class="irctc-section">
+        <div class="section-title">Passenger Details</div>
+        <div id="passengerList" class="passenger-list"></div>
+        <button id="addPassenger" class="btn btn-secondary" type="button">+ Add Passenger</button>
+      </section>
+
+      <section class="irctc-section">
+        <div class="section-title">Contact Details</div>
+        <div class="field-row compact">
+          <label for="countryCode">Mobile Number<span class="required">*</span></label>
+          <div class="mobile-grid">
+            <input id="countryCode" class="country" type="text" value="+91" readonly>
+            <input id="mobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10 digit mobile number">
+          </div>
+        </div>
+        <div class="field-row">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="Email address">
+        </div>
+      </section>
+
+      <section class="irctc-section">
+        <div class="section-title">Passenger-page preferences</div>
+        <label class="choice-line"><input id="autoUpgradation" type="checkbox"><span>Auto Upgradation</span></label>
+        <label class="choice-line"><input id="confirmBerths" type="checkbox"><span>Book Only if Confirm Berths</span></label>
+        <div class="radio-row">
+          <span class="radio-label">Travel Insurance:</span>
+          <label><input name="travelInsurance" type="radio" value="yes"> <span>Yes</span></label>
+          <label><input name="travelInsurance" type="radio" value="no"> <span>No</span></label>
+        </div>
+        <div class="radio-row">
+          <span class="radio-label">Payment Mode:</span>
+          <label><input name="paymentMode" type="radio" value="upi"> <span>BHIM/UPI</span></label>
+          <label><input name="paymentMode" type="radio" value="cards"> <span>Cards</span></label>
+        </div>
+        <div class="field-row compact">
+          <label for="paymentProvider">Default UPI provider</label>
+          <select id="paymentProvider">
+            <option value="paytm-upi">Paytm UPI</option>
+            <option value="bhim-upi">BHIM UPI</option>
+            <option value="phonepe">PhonePe</option>
+            <option value="razorpay">Razorpay</option>
+          </select>
+        </div>
+        <section id="lastPaymentMethodSection" class="last-payment-method" aria-labelledby="lastPaymentMethodTitle">
+          <div id="lastPaymentMethodTitle" class="last-payment-title">Last Payment Method</div>
+          <p>On IRCTC Payment Options, select BHIM/UPI/USSD and your saved provider. Pay &amp; Book remains manual.</p>
+          <label class="choice-line"><input id="autoPreparePayment" type="checkbox"><span>Automatically set BHIM/UPI/USSD and Paytm UPI</span></label>
+        </section>
+        <label class="choice-line"><input id="autoContinue" type="checkbox"><span>Click Continue once after filling passenger details</span></label>
+        <label class="choice-line"><input id="autoReviewContinue" type="checkbox"><span>Click Continue once on the Review Journey page</span></label>
+        <label class="choice-line"><input id="autoPayAndBook" type="checkbox"><span>Click Pay &amp; Book once after UPI provider is selected (QR / UPI page opens; you pay manually)</span></label>
+        <label class="choice-line autopilot-line"><input id="autoPilot" type="checkbox"><span>Autofill passenger details once and prepare the selected payment method</span></label>
+        <label class="choice-line"><input id="developerMode" type="checkbox"><span>Show diagnostic log in the floating panel</span></label>
+        <button id="toggleAutopilot" class="btn btn-secondary" type="button">Autofill OFF</button>
+      </section>
+
+      <div id="message" class="message" role="status"></div>
+      <footer class="form-actions">
+        <button id="resetDefaults" class="btn btn-light" type="button">Reset</button>
+        <button class="btn btn-primary" type="submit">Save Configuration</button>
+      </footer>
+    </form>
+  </main>
+
+  <template id="passengerTemplate">
+    <article class="passenger-card">
+      <button class="remove-passenger" type="button" aria-label="Remove passenger">X</button>
+      <h2></h2>
+      <div class="field-row"><label>Name</label><input data-field="name" type="text" placeholder="Enter passenger name" autocomplete="name"></div>
+      <div class="two-col">
+        <div class="field-row"><label>Age</label><input data-field="age" type="number" min="0" max="100" placeholder="Age"></div>
+        <div class="field-row"><label>Gender</label><select data-field="gender"><option>Male</option><option>Female</option><option>Transgender</option></select></div>
+      </div>
+      <div class="two-col">
+        <div class="field-row"><label>Nationality</label><select data-field="nationality"><option>India</option><option>Other</option></select></div>
+        <div class="field-row"><label>Berth Preference</label><select data-field="berth"><option>No Preference</option><option>Lower</option><option>Middle</option><option>Upper</option><option>Side Lower</option><option>Side Upper</option><option>Window Side</option></select></div>
+      </div>
+      <div class="field-row"><label>Concession</label><select data-field="concession"><option>None</option><option>Senior Citizen</option><option>Student</option><option>Divyangjan</option><option>Escort</option></select></div>
+    </article>
+  </template>
+  <script src="performance-utils.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
